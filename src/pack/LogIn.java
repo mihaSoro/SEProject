@@ -140,7 +140,7 @@ public class LogIn extends JFrame {
     public static void ReadXML() {
         try {
             int i = -1;
-            File fXmlFile = new File("C:\\Users\\CristiaN1\\IdeaProjects\\PROJ-LogIn\\file.xml");
+            File fXmlFile = new File("D:\\file.xml");
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(fXmlFile);

@@ -80,7 +80,7 @@ public class SignUp extends JFrame {
                     String cparola = new String(cpass.getPassword());
                     if (parola.equals(cparola)) {
                         String passencrypt = sha256(parola);
-                        CreateXML(user.getText(), passencrypt, "Player", "C:\\Users\\CristiaN1\\IdeaProjects\\PROJ-LogIn\\file.xml");
+                        CreateXML(user.getText(), passencrypt, "Player", "D:\\file.xml");
                         JOptionPane.showMessageDialog(null, user.getText() + " " + passencrypt);
                     } else
                         JOptionPane.showMessageDialog(null, "Password do not match!");
@@ -174,7 +174,7 @@ public class SignUp extends JFrame {
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File("C:\\Users\\CristiaN1\\IdeaProjects\\PROJ-LogIn\\file.xml"));
+            StreamResult result = new StreamResult(new File("D:\\file.xml"));
 
             // Output to console for testing
             // StreamResult result = new StreamResult(System.out);
