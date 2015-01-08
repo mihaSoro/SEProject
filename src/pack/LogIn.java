@@ -1,9 +1,12 @@
 package pack;
 
+import controllers.PuzzleController;
+import model.PuzzleModel;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import views.PuzzleView;
 
 import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
@@ -80,6 +83,25 @@ public class LogIn extends JFrame {
                     if (name.equals(player.getUser())) {
                         if (passenc.equals(player.getPass())) {
                             JOptionPane.showMessageDialog(null, "Welcome, "+player.getUser());
+
+                            //Instantiate the MVC elements
+
+                            PuzzleModel model = new PuzzleModel();
+                            PuzzleController controller = new PuzzleController();
+                            PuzzleView view = new PuzzleView(model, controller);
+
+
+                            //Attach the view to the model
+                            model.addModelListener(view);
+
+                            //Tell the controller about the model and the view
+                            controller.addModel(model);
+                            controller.addView(view);
+
+                            //Just Display the view
+                            view.setVisible(true);
+
+
                             break;
                         } else {
                             JOptionPane.showMessageDialog(null, "Invalid user or password");
