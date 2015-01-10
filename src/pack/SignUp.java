@@ -35,7 +35,7 @@ public class SignUp extends JFrame {
         JFrame frame = new JFrame("Registration Frame");
         frame.setSize(340, 200);
         frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel panel = new JPanel();
         frame.add(panel);
@@ -78,12 +78,20 @@ public class SignUp extends JFrame {
                 if (source == submit) {
                     String parola = new String(pass.getPassword());
                     String cparola = new String(cpass.getPassword());
-                    if (parola.equals(cparola)) {
-                        String passencrypt = sha256(parola);
-                        CreateXML(user.getText(), passencrypt, "Player", "D:\\file.xml");
-                        JOptionPane.showMessageDialog(null, user.getText() + " " + passencrypt);
+
+                    //check if the fields have been completed
+                    if (!user.getText().isEmpty() && !parola.isEmpty()) {
+
+                        if (parola.equals(cparola) && !user.getText().isEmpty() && !parola.isEmpty()) {
+                            String passencrypt = sha256(parola);
+                            CreateXML(user.getText(), passencrypt, "Player", "D:\\file.xml");
+                            JOptionPane.showMessageDialog(null, "Welcome "+user.getText() + "! You are now an official player!" );
+
+                        } else
+                            JOptionPane.showMessageDialog(null, "Password do not match!");
+
                     } else
-                        JOptionPane.showMessageDialog(null, "Password do not match!");
+                        JOptionPane.showMessageDialog(null, "All fields must be completed!");
 
                 } else if (source == reset) {
                     user.setText("");

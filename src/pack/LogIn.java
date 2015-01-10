@@ -11,6 +11,7 @@ import views.PuzzleView;
 import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -20,7 +21,9 @@ import java.util.ArrayList;
 /**
  * Created by CristiaN1 on 1/7/2015.
  */
-public class LogIn extends JFrame {
+public class LogIn extends JApplet {
+
+    private JApplet puzzleApplet;
     private JTextField userText = new JTextField(20);
     private JPasswordField passwordText = new JPasswordField(20);
     private JButton loginButton = new JButton("Login");
@@ -28,12 +31,21 @@ public class LogIn extends JFrame {
 
     static ArrayList<Players> ply = new ArrayList<Players>();
 
+    public LogIn()  {
+
+        puzzleApplet = new JApplet();
+        puzzleApplet.setPreferredSize(new Dimension(500, 500));
+        puzzleApplet.init();
+
+    }
+
     public void placeComponents()
     {
-        JFrame frame = new JFrame("Demo application");
+        JFrame frame = new JFrame("Login Window");
         frame.setSize(300, 150);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.getContentPane().add(puzzleApplet);
 
         JPanel panel = new JPanel();
         frame.add(panel);
@@ -65,14 +77,18 @@ public class LogIn extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 SignUp el = new SignUp();
                 el.start();
+
+
             }
         };
 
-        ReadXML();
+
 
         ActionListener loginButtonListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+                ReadXML();
                 String name = userText.getText();
                 String pass = new String(passwordText.getPassword());
                 String passenc = sha256(pass);
@@ -117,6 +133,8 @@ public class LogIn extends JFrame {
         registerButton.addActionListener(registerButtonListener);
 
         frame.setVisible(true);
+
+        puzzleApplet.start();
     }
 
     public static String sha256(String base) {

@@ -41,8 +41,8 @@ public class PuzzleView extends JFrame implements IModelListener, IView {
         int width = mModel.getmWidth();
         int height = mModel.getmHeight();
 
-        for ( int i = 0; i < 4; i++) {
-            for ( int j = 0; j < 3; j++) {
+        for ( int i = 3; i >= 0; i--) {
+            for ( int j = 2; j >=0; j--) {
                 if ( j == 2 && i == 3) {
                     mLabel = new JLabel("");
                     mCenterPanel.add(mLabel);

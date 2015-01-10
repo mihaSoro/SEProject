@@ -1,5 +1,8 @@
 import pack.LogIn;
 
+import javax.swing.*;
+import java.awt.*;
+
 /**
  * Created by hp on 12/9/2014.
  */
@@ -7,8 +10,11 @@ public class PuzzleMain {
 
     public static void main(String[] args){
 
+
+
         LogIn loginFrame= new LogIn();
         loginFrame.placeComponents();
+
 
 
 /*        //Instantiate the MVC elements
