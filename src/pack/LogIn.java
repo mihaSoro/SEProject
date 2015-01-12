@@ -21,7 +21,7 @@ import java.util.ArrayList;
 /**
  * Created by CristiaN1 on 1/7/2015.
  */
-public class LogIn extends JApplet {
+public class  LogIn extends JApplet {
 
     private JApplet puzzleApplet;
     private JTextField userText = new JTextField(20);

@@ -23,7 +23,21 @@ public class PuzzleModel {
     private int[][] mPos;
     private int mWidth, mHeight;
     private JButton mPressedButton;
-
+    private static int score=0;
+    
+    public void updateScore(){
+    	score++;
+    	
+    	System.out.println("Scorul curent: " + score);
+    	
+    	
+    }
+    
+    public int getScore(){
+    	return score;
+    }
+    
+    
     //The list of listeners
     private List<IModelListener> mListeners;
 

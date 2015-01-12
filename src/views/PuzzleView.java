@@ -15,128 +15,149 @@ import java.awt.image.FilteredImageSource;
  */
 public class PuzzleView extends JFrame implements IModelListener, IView {
 
-    private JPanel mCenterPanel;
-    private JButton mButton;
-    private JLabel mLabel;
+	private JPanel mCenterPanel;
+	private JButton mButton;
+	private JLabel mLabel;
 
-    private Image mImage;
+	private Image mImage;
 
-    private IController mPuzzleController;
-    private PuzzleModel mModel;
+	private IController mPuzzleController;
+	private PuzzleModel mModel;
 
-    /**
-     *  The PuzzleView Controller
-     */
-    public PuzzleView( PuzzleModel model, IController controller ){
+	private JLabel scoreLabel;
 
-        mModel = model;
-        mPuzzleController = controller;
+	/**
+	 * The PuzzleView Controller
+	 */
+	public PuzzleView(PuzzleModel model, IController controller) {
 
-        mCenterPanel = new JPanel();
-        mCenterPanel.setLayout(new GridLayout(4, 4, 0, 0));
+		mModel = model;
+		mPuzzleController = controller;
 
-        add(Box.createRigidArea(new Dimension(0, 5)), BorderLayout.NORTH);
-        add(mCenterPanel, BorderLayout.CENTER);
+		mCenterPanel = new JPanel();
+		mCenterPanel.setLayout(new GridLayout(5, 4, 0, 0));
 
-        int width = mModel.getmWidth();
-        int height = mModel.getmHeight();
+		add(Box.createRigidArea(new Dimension(0, 5)), BorderLayout.NORTH);
+		add(mCenterPanel, BorderLayout.CENTER);
 
-        for ( int i = 3; i >= 0; i--) {
-            for ( int j = 2; j >=0; j--) {
-                if ( j == 2 && i == 3) {
-                    mLabel = new JLabel("");
-                    mCenterPanel.add(mLabel);
-                } else {
-                    mButton = new JButton();
-                    mButton.addActionListener(mPuzzleController);
-                    mButton.setActionCommand(IController.ACTION_MOVE_PIECE);
-                    mCenterPanel.add(mButton);
-                    mImage = createImage(new FilteredImageSource(mModel.getmSource().getSource(),
-                            new CropImageFilter(j*width/3, i*height/4,
-                                    (width/3)+1, height/4)));
+		int width = mModel.getmWidth();
+		int height = mModel.getmHeight();
 
-                    mButton.setIcon(new ImageIcon(mImage));
+		for (int i = 3; i >= 0; i--) {
+			for (int j = 2; j >= 0; j--) {
+				if (j == 2 && i == 3) {
+					mLabel = new JLabel("");
+					mCenterPanel.add(mLabel);
+				} else {
+					mButton = new JButton();
+					mButton.addActionListener(mPuzzleController);
+					mButton.setActionCommand(IController.ACTION_MOVE_PIECE);
+					mCenterPanel.add(mButton);
+					mImage = createImage(new FilteredImageSource(mModel
+							.getmSource().getSource(), new CropImageFilter(j
+							* width / 3, i * height / 4, (width / 3) + 1,
+							height / 4)));
 
-                }
-            }
-        }
+					mButton.setIcon(new ImageIcon(mImage));
 
-        setSize(325, 275);
-        setTitle("Puzzle");
-        setResizable(false);
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setVisible(true);
+				}
+			}
+		}
 
+		scoreLabel = new JLabel("Moves: 0");
+		mCenterPanel.add(scoreLabel);
 
-    }
+		setSize(325, 275);
+		// setSize(425, 275);
+		setTitle("Puzzle");
+		setResizable(false);
+		setLocationRelativeTo(null);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setVisible(true);
 
+	}
 
-    @Override
-    public void onUpdate() {
+	@Override
+	public void onUpdate() {
 
-        JButton button = mModel.getPressedButton();
-        Dimension size = button.getSize();
+		JButton button = mModel.getPressedButton();
+		Dimension size = button.getSize();
 
-        int labelX = mLabel.getX();
-        int labelY = mLabel.getY();
-        int buttonX = button.getX();
-        int buttonY = button.getY();
-        int buttonPosX = buttonX / size.width;
-        int buttonPosY = buttonY / size.height;
-        int buttonIndex = mModel.getPos(buttonPosY, buttonPosX);
+		int labelX = mLabel.getX();
+		int labelY = mLabel.getY();
+		int buttonX = button.getX();
+		int buttonY = button.getY();
+		int buttonPosX = buttonX / size.width;
+		int buttonPosY = buttonY / size.height;
+		int buttonIndex = mModel.getPos(buttonPosY, buttonPosX);
 
+		if (labelX == buttonX && (labelY - buttonY) == size.height) {
 
+			mModel.updateScore();
+			scoreLabel.setText("Moves: " + Integer.toString(mModel.getScore()));
 
-        if (labelX == buttonX && (labelY - buttonY) == size.height ) {
+			int labelIndex = buttonIndex + 3;
 
-            int labelIndex = buttonIndex + 3;
+			mCenterPanel.remove(buttonIndex);
+			mCenterPanel.add(mLabel, buttonIndex);
+			mCenterPanel.add(button, labelIndex);
+			mCenterPanel.validate();
 
-            mCenterPanel.remove(buttonIndex);
-            mCenterPanel.add(mLabel, buttonIndex);
-            mCenterPanel.add(button,labelIndex);
-            mCenterPanel.validate();
-        }
+		}
 
-        if (labelX == buttonX && (labelY - buttonY) == -size.height ) {
+		if (labelX == buttonX && (labelY - buttonY) == -size.height) {
 
-            int labelIndex = buttonIndex - 3;
-            mCenterPanel.remove(labelIndex);
-            mCenterPanel.add(button,labelIndex);
-            mCenterPanel.add(mLabel, buttonIndex);
-            mCenterPanel.validate();
-        }
+			mModel.updateScore();
+			scoreLabel.setText("Moves: " + Integer.toString(mModel.getScore()));
 
-        if (labelY == buttonY && (labelX - buttonX) == size.width ) {
+			int labelIndex = buttonIndex - 3;
+			mCenterPanel.remove(labelIndex);
+			mCenterPanel.add(button, labelIndex);
+			mCenterPanel.add(mLabel, buttonIndex);
+			mCenterPanel.validate();
 
-            int labelIndex = buttonIndex + 1;
+		}
 
-            mCenterPanel.remove(buttonIndex);
-            mCenterPanel.add(mLabel, buttonIndex);
-            mCenterPanel.add(button,labelIndex);
-            mCenterPanel.validate();
-        }
+		if (labelY == buttonY && (labelX - buttonX) == size.width) {
 
-        if (labelY == buttonY && (labelX - buttonX) == -size.width ) {
+			mModel.updateScore();
+			scoreLabel.setText("Moves: " + Integer.toString(mModel.getScore()));
 
-            int labelIndex = buttonIndex - 1;
+			int labelIndex = buttonIndex + 1;
 
-            mCenterPanel.remove(buttonIndex);
-            mCenterPanel.add(mLabel, labelIndex);
-            mCenterPanel.add(button,labelIndex);
-            mCenterPanel.validate();
-        }
+			mCenterPanel.remove(buttonIndex);
+			mCenterPanel.add(mLabel, buttonIndex);
+			mCenterPanel.add(button, labelIndex);
+			mCenterPanel.validate();
 
-    }
+		}
 
-    @Override
-    public void onMessage(boolean isError, String message) {
+		if (labelY == buttonY && (labelX - buttonX) == -size.width) {
 
-        if (isError) {
-            JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(this, message, "Puzzle MVC", JOptionPane.INFORMATION_MESSAGE);
-        }
+			mModel.updateScore();
+			scoreLabel.setText("Moves: " + Integer.toString(mModel.getScore()));
 
-    }
+			int labelIndex = buttonIndex - 1;
+
+			mCenterPanel.remove(buttonIndex);
+			mCenterPanel.add(mLabel, labelIndex);
+			mCenterPanel.add(button, labelIndex);
+			mCenterPanel.validate();
+
+		}
+
+	}
+
+	@Override
+	public void onMessage(boolean isError, String message) {
+
+		if (isError) {
+			JOptionPane.showMessageDialog(this, message, "Error",
+					JOptionPane.ERROR_MESSAGE);
+		} else {
+			JOptionPane.showMessageDialog(this, message, "Puzzle MVC",
+					JOptionPane.INFORMATION_MESSAGE);
+		}
+
+	}
 }
