@@ -5,10 +5,14 @@ import interfaces.IModelListener;
 import interfaces.IView;
 import model.PuzzleModel;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.image.CropImageFilter;
 import java.awt.image.FilteredImageSource;
+import java.awt.image.ImageConsumer;
+import java.awt.image.ImageProducer;
 
 /**
  * Created by hp on 12/8/2014.
@@ -25,6 +29,7 @@ public class PuzzleView extends JFrame implements IModelListener, IView {
 	private PuzzleModel mModel;
 
 	private JLabel scoreLabel;
+	private JLabel resultLabel;
 
 	/**
 	 * The PuzzleView Controller
@@ -66,8 +71,20 @@ public class PuzzleView extends JFrame implements IModelListener, IView {
 
 		scoreLabel = new JLabel("Moves: 0");
 		mCenterPanel.add(scoreLabel);
+		
+		resultLabel = new JLabel("Full image: ");
+		mCenterPanel.add(resultLabel);
+		
+				
+		Image fullImg = mModel.getmSource();
+		fullImg = fullImg.getScaledInstance(55, 55, Image.SCALE_SMOOTH);
+		ImageIcon fullImageIcon = new ImageIcon(fullImg);
+		
+		JLabel labelFullImg = new JLabel (fullImageIcon);	
+	    mCenterPanel.add(labelFullImg);
+				
 
-		setSize(325, 275);
+		setSize(325, 343);
 		// setSize(425, 275);
 		setTitle("Puzzle");
 		setResizable(false);
