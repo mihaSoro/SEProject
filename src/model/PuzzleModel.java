@@ -3,8 +3,15 @@ package model;
 import interfaces.IModelListener;
 
 import javax.swing.*;
+
+import controllers.TimerController;
+
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import java.util.List;
 
 /**
@@ -12,118 +19,140 @@ import java.util.List;
  */
 public class PuzzleModel {
 
-    /**
-     * mSource is the image loaded from file
-     * mPos is the matrix with positions for the image part
-     * mWidth and mHeight are the width and height of the image
-     * mPressedButton keeps track of the button which was pressed since it's location has to be updated in the View
-     */
+	/**
+	 * mSource is the image loaded from file mPos is the matrix with positions
+	 * for the image part mWidth and mHeight are the width and height of the
+	 * image mPressedButton keeps track of the button which was pressed since
+	 * it's location has to be updated in the View
+	 */
 
-    private Image mSource;
-    private int[][] mPos;
-    private int mWidth, mHeight;
-    private JButton mPressedButton;
-    private static int score=0;
-    
-    public void updateScore(){
-    	score++;
-    	
-    	System.out.println("Scorul curent: " + score);
-    	
-    	
-    }
-    
-    public int getScore(){
-    	return score;
-    }
-    
-    
-    //The list of listeners
-    private List<IModelListener> mListeners;
+	private Image mSource;
+	private int[][] mPos;
+	private int mWidth, mHeight;
+	private JButton mPressedButton;
+	private static int score = 0;
 
-    public PuzzleModel()
-    {
-        mPos = new int[][] {
-                {0, 1, 2},
-                {3, 4, 5},
-                {6, 7, 8},
-                {9, 10, 11}
-        };
+	private long tStart;
+	private long tEnd;
+	private long tDelta;
+	private double elapsedSeconds;
 
-        //Load the image from file
-        ImageIcon img = new ImageIcon(PuzzleModel.class.getResource("Puzzle.gif"));
-        mSource = img.getImage();
+	
 
-        //Get width and height of the image
-        mWidth = img.getIconWidth();
+	public void updateScore() {
+		score++;
 
-        mHeight = img.getIconHeight();
+		System.out.println("Scorul curent: " + score);
 
+	}
 
+	public void resetScore() {
+		score = 0;
+	}
 
-    }
+	public void startTimer() {
+		this.tStart = System.currentTimeMillis();
+	}
 
+	public void updateTimer() {
+		//this.tEnd = System.currentTimeMillis();
+		//this.tDelta = tEnd - tStart;
+		//this.elapsedSeconds = tDelta / 1000.0;
+		this.elapsedSeconds = TimerController.getElapsedTime();
+		
+	}
 
-    /**
-     * Adds the view listener to the list
-     *
-     * @param listener The model event listener
-     */
-    public void addModelListener(IModelListener listener) {
-        if (mListeners == null) {
-            mListeners = new ArrayList<IModelListener>();
-        }
+	public double getTimeElapsed() {
+		return elapsedSeconds;
+	}
 
-        mListeners.add(listener);
-    }
+	public int getScore() {
+		return score;
+	}
 
-    /**
-     * Notifies the views listeners of the changed state (value)
-     */
-    private void notifyListeners() {
-        if (mListeners != null && !mListeners.isEmpty()) {
-            for (IModelListener listener : mListeners)
-                listener.onUpdate();
-        }
-    }
+	// The list of listeners
+	private List<IModelListener> mListeners;
 
-    public Image getmSource(){
+	public PuzzleModel() {
+		mPos = new int[][] { { 0, 1, 2 }, { 3, 4, 5 }, { 6, 7, 8 },
+				{ 9, 10, 11 } };
 
-        return mSource;
-    }
+		// Load the image from file
+		ImageIcon img = new ImageIcon(
+				PuzzleModel.class.getResource("Puzzle.gif"));
+		mSource = img.getImage();
 
-    public int getmWidth(){
+		// Get width and height of the image
+		mWidth = img.getIconWidth();
 
-        return mWidth;
-    }
+		mHeight = img.getIconHeight();
 
-    public int getmHeight(){
+	}
 
-        return mHeight;
+	/**
+	 * Adds the view listener to the list
+	 * 
+	 * @param listener
+	 *            The model event listener
+	 */
+	public void addModelListener(IModelListener listener) {
+		if (mListeners == null) {
+			mListeners = new ArrayList<IModelListener>();
+		}
 
-    }
+		mListeners.add(listener);
+	}
 
-    /**
-     * This method sets the button which was pressed and notifies the listeners
-     * @param button  The button pressed
-     */
-    public void setPressedButton(JButton button){
+	/**
+	 * Notifies the views listeners of the changed state (value)
+	 */
+	private void notifyListeners() {
+		if (mListeners != null && !mListeners.isEmpty()) {
+			for (IModelListener listener : mListeners)
+				listener.onUpdate();
+		}
+	}
 
-        mPressedButton = button;
+	public Image getmSource() {
 
-        notifyListeners();
+		return mSource;
+	}
 
-    }
+	public int getmWidth() {
 
-    public JButton getPressedButton(){
+		return mWidth;
+	}
 
-        return mPressedButton;
-    }
+	public int getmHeight() {
 
-    public int getPos(int i, int j){
+		return mHeight;
 
-        return mPos[i][j];
-    }
+	}
+
+	/**
+	 * This method sets the button which was pressed and notifies the listeners
+	 * 
+	 * @param button
+	 *            The button pressed
+	 */
+	public void setPressedButton(JButton button) {
+
+		mPressedButton = button;
+
+		notifyListeners();
+
+	}
+
+	public JButton getPressedButton() {
+
+		return mPressedButton;
+	}
+
+	public int getPos(int i, int j) {
+
+		return mPos[i][j];
+	}
+	
+	
 
 }
-

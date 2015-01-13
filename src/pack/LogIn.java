@@ -1,5 +1,6 @@
 package pack;
 
+
 import controllers.PuzzleController;
 import model.PuzzleModel;
 import org.w3c.dom.Document;
@@ -7,6 +8,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import views.PuzzleView;
+import controllers.TimerController;
 
 import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
@@ -106,7 +108,8 @@ public class  LogIn extends JApplet {
                             PuzzleController controller = new PuzzleController();
                             PuzzleView view = new PuzzleView(model, controller);
 
-
+                           
+                            
                             //Attach the view to the model
                             model.addModelListener(view);
 
@@ -116,8 +119,9 @@ public class  LogIn extends JApplet {
 
                             //Just Display the view
                             view.setVisible(true);
-
-
+                            
+                            model.startTimer(); 
+                    	   
                             break;
                         } else {
                             JOptionPane.showMessageDialog(null, "Invalid user or password");

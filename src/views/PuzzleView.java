@@ -1,5 +1,7 @@
 package views;
 
+
+
 import interfaces.IController;
 import interfaces.IModelListener;
 import interfaces.IView;
@@ -7,6 +9,8 @@ import model.PuzzleModel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
+import controllers.TimerController;
 
 import java.awt.*;
 import java.awt.image.CropImageFilter;
@@ -30,6 +34,8 @@ public class PuzzleView extends JFrame implements IModelListener, IView {
 
 	private JLabel scoreLabel;
 	private JLabel resultLabel;
+	
+	
 
 	/**
 	 * The PuzzleView Controller
@@ -66,16 +72,23 @@ public class PuzzleView extends JFrame implements IModelListener, IView {
 					mButton.setIcon(new ImageIcon(mImage));
 
 				}
-			}
+			}	
 		}
 
-		scoreLabel = new JLabel("Moves: 0");
+		TimerController.addPuzzleView(this);
+		mModel.resetScore();
+		
+		TimerController.resetCounter();
+		
+		
+		scoreLabel = new JLabel("<html>Moves: 0 Time: 0 s</html>");
 		mCenterPanel.add(scoreLabel);
 		
 		resultLabel = new JLabel("Full image: ");
 		mCenterPanel.add(resultLabel);
 		
 				
+		
 		Image fullImg = mModel.getmSource();
 		fullImg = fullImg.getScaledInstance(55, 55, Image.SCALE_SMOOTH);
 		ImageIcon fullImageIcon = new ImageIcon(fullImg);
@@ -111,7 +124,7 @@ public class PuzzleView extends JFrame implements IModelListener, IView {
 		if (labelX == buttonX && (labelY - buttonY) == size.height) {
 
 			mModel.updateScore();
-			scoreLabel.setText("Moves: " + Integer.toString(mModel.getScore()));
+			updateTime();
 
 			int labelIndex = buttonIndex + 3;
 
@@ -125,7 +138,8 @@ public class PuzzleView extends JFrame implements IModelListener, IView {
 		if (labelX == buttonX && (labelY - buttonY) == -size.height) {
 
 			mModel.updateScore();
-			scoreLabel.setText("Moves: " + Integer.toString(mModel.getScore()));
+			updateTime();
+
 
 			int labelIndex = buttonIndex - 3;
 			mCenterPanel.remove(labelIndex);
@@ -138,7 +152,8 @@ public class PuzzleView extends JFrame implements IModelListener, IView {
 		if (labelY == buttonY && (labelX - buttonX) == size.width) {
 
 			mModel.updateScore();
-			scoreLabel.setText("Moves: " + Integer.toString(mModel.getScore()));
+			updateTime();
+
 
 			int labelIndex = buttonIndex + 1;
 
@@ -152,7 +167,7 @@ public class PuzzleView extends JFrame implements IModelListener, IView {
 		if (labelY == buttonY && (labelX - buttonX) == -size.width) {
 
 			mModel.updateScore();
-			scoreLabel.setText("Moves: " + Integer.toString(mModel.getScore()));
+			updateTime();
 
 			int labelIndex = buttonIndex - 1;
 
@@ -177,4 +192,13 @@ public class PuzzleView extends JFrame implements IModelListener, IView {
 		}
 
 	}
+	
+	public void updateTime(){
+		mModel.updateTimer();
+		scoreLabel.setText("<html>Moves: " + Integer.toString(mModel.getScore()) + " Time: " + 
+				Integer.toString(TimerController.getElapsedTime())
+				+ "s </html>");
+	}
+	
+	
 }
