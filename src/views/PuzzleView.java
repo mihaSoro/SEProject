@@ -34,6 +34,8 @@ public class PuzzleView extends JFrame implements IModelListener, IView {
 	private JLabel scoreLabel;
 	private JLabel resultLabel;
 
+	private int order[];
+
 	/**
 	 * The PuzzleView Controller
 	 */
@@ -58,9 +60,9 @@ public class PuzzleView extends JFrame implements IModelListener, IView {
 
 		JButton[][] buttons = new JButton[4][3];
 
-		for (int i = 3; i >= 0; i--) {
+		for (int i = 0; i <= 3; i++) {
 			// buttons[i][] = new JButton[]
-			for (int j = 2; j >= 0; j--) {
+			for (int j = 0; j <= 2; j++) {
 				if (j == 2 && i == 3) {
 					mLabel = new JLabel("");
 					mCenterPanel.add(mLabel);
@@ -90,12 +92,20 @@ public class PuzzleView extends JFrame implements IModelListener, IView {
 			}
 		}
 
+		order = new int[12];
+		int orderPos = 0;
+		order[orderPos] = 0;
+		System.out.printf(order[0] + " ");
+		orderPos++;
 		for (int i = R + 3; i >= R; i--)
 			for (int j = R + 2; j >= R; j--)
 				if (i % 4 == 3 && j % 3 == 2) {
 
 				} else {
 					mCenterPanel.add(buttons[i % 4][j % 3]);
+					order[orderPos] = (i % 4) * 3 + (j % 3)+1;
+					System.out.printf(order[orderPos] + " ");
+					orderPos++;
 				}
 
 		TimerController.addPuzzleView(this);
@@ -138,6 +148,7 @@ public class PuzzleView extends JFrame implements IModelListener, IView {
 		int buttonPosX = buttonX / size.width;
 		int buttonPosY = buttonY / size.height;
 		int buttonIndex = mModel.getPos(buttonPosY, buttonPosX);
+		int man;
 
 		if (labelX == buttonX && (labelY - buttonY) == size.height) {
 
@@ -150,6 +161,13 @@ public class PuzzleView extends JFrame implements IModelListener, IView {
 			mCenterPanel.add(mLabel, buttonIndex);
 			mCenterPanel.add(button, labelIndex);
 			mCenterPanel.validate();
+
+			man = order[labelIndex];
+			order[labelIndex] = order[buttonIndex];
+			order[buttonIndex] = man;
+			
+			mModel.printOrder(order);
+			mModel.checkPuzzle(order);
 
 		}
 
@@ -164,6 +182,12 @@ public class PuzzleView extends JFrame implements IModelListener, IView {
 			mCenterPanel.add(mLabel, buttonIndex);
 			mCenterPanel.validate();
 
+			man = order[labelIndex];
+			order[labelIndex] = order[buttonIndex];
+			order[buttonIndex] = man;
+			
+			mModel.printOrder(order);
+			mModel.checkPuzzle(order);
 		}
 
 		if (labelY == buttonY && (labelX - buttonX) == size.width) {
@@ -178,6 +202,13 @@ public class PuzzleView extends JFrame implements IModelListener, IView {
 			mCenterPanel.add(button, labelIndex);
 			mCenterPanel.validate();
 
+			man = order[labelIndex];
+			order[labelIndex] = order[buttonIndex];
+			order[buttonIndex] = man;
+			
+			mModel.printOrder(order);
+			mModel.checkPuzzle(order);
+
 		}
 
 		if (labelY == buttonY && (labelX - buttonX) == -size.width) {
@@ -191,6 +222,13 @@ public class PuzzleView extends JFrame implements IModelListener, IView {
 			mCenterPanel.add(mLabel, labelIndex);
 			mCenterPanel.add(button, labelIndex);
 			mCenterPanel.validate();
+
+			man = order[labelIndex];
+			order[labelIndex] = order[buttonIndex];
+			order[buttonIndex] = man;
+			
+			mModel.printOrder(order);
+			mModel.checkPuzzle(order);
 
 		}
 

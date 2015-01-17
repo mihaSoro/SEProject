@@ -153,6 +153,19 @@ public class PuzzleModel {
 		return mPos[i][j];
 	}
 	
+	public void printOrder(int[] order){
+		System.out.printf("Ordine piese: ");
+		for (int i = 0; i <= 11; i++) {
+			System.out.printf(order[i] + " ");
+		}
+		System.out.printf("\n");
+	}
 	
-
+	public int checkPuzzle(int[] order){
+		for (int i=1;i<12;i++)
+			if (order[i-1]!=i)
+				return 0;
+		System.out.printf("Gata!");
+		return 1;
+	}
 }
