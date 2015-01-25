@@ -166,8 +166,6 @@ public class PuzzleView extends JFrame implements IModelListener, IView {
 			order[labelIndex] = order[buttonIndex];
 			order[buttonIndex] = man;
 			
-			mModel.printOrder(order);
-			mModel.checkPuzzle(order);
 
 		}
 
@@ -186,8 +184,7 @@ public class PuzzleView extends JFrame implements IModelListener, IView {
 			order[labelIndex] = order[buttonIndex];
 			order[buttonIndex] = man;
 			
-			mModel.printOrder(order);
-			mModel.checkPuzzle(order);
+
 		}
 
 		if (labelY == buttonY && (labelX - buttonX) == size.width) {
@@ -205,9 +202,7 @@ public class PuzzleView extends JFrame implements IModelListener, IView {
 			man = order[labelIndex];
 			order[labelIndex] = order[buttonIndex];
 			order[buttonIndex] = man;
-			
-			mModel.printOrder(order);
-			mModel.checkPuzzle(order);
+
 
 		}
 
@@ -227,12 +222,33 @@ public class PuzzleView extends JFrame implements IModelListener, IView {
 			order[labelIndex] = order[buttonIndex];
 			order[buttonIndex] = man;
 			
-			mModel.printOrder(order);
-			mModel.checkPuzzle(order);
+
 
 		}
 
-	}
+        mModel.printOrder(order);
+        if (mModel.checkPuzzle(order) == 1)
+        {
+
+            JFrame winFrame=new JFrame("Congratulation Window!!!");
+            winFrame.setSize(480, 288);
+            winFrame.setLocationRelativeTo(null);
+
+
+
+            Image winImg = mModel.getmWinImg();
+            ImageIcon winImageIcon = new ImageIcon(winImg);
+
+            JLabel labelWinImg = new JLabel();
+            labelWinImg.setIcon(winImageIcon);
+            winFrame.add(labelWinImg);
+
+            winFrame.setVisible(true);
+
+        }
+
+
+    }
 
 	@Override
 	public void onMessage(boolean isError, String message) {

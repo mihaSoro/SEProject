@@ -7,6 +7,7 @@ import javax.swing.*;
 import controllers.TimerController;
 
 import java.awt.*;
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Timer;
@@ -27,6 +28,7 @@ public class PuzzleModel {
 	 */
 
 	private Image mSource;
+    private Image mWinImg;
 	private int[][] mPos;
 	private int mWidth, mHeight;
 	private JButton mPressedButton;
@@ -82,6 +84,12 @@ public class PuzzleModel {
 				PuzzleModel.class.getResource("Puzzle.gif"));
 		mSource = img.getImage();
 
+        // Load the winning image
+
+        ImageIcon img1 = new ImageIcon( PuzzleModel.class.getResource("winner.jpg"));
+        mWinImg = img1.getImage();
+        System.out.println("Image dimensions are:"+img1.getIconWidth()+' '+img1.getIconHeight());
+
 		// Get width and height of the image
 		mWidth = img.getIconWidth();
 
@@ -117,6 +125,11 @@ public class PuzzleModel {
 
 		return mSource;
 	}
+
+    public Image getmWinImg(){
+
+        return mWinImg;
+    }
 
 	public int getmWidth() {
 
